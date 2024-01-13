@@ -3,6 +3,16 @@
     "name": "Acronym Decoder",
     "description": "Scans your document for acronyms and replaces it with the definition",
     "version": "1.0",
+    "content_scripts": [
+        {
+            "matches": [   
+                "https://*/*",
+                "http://*/*"
+            ],
+            "js": ["contentupdate.js"],
+            "run_at": "document_end"
+        }
+    ],
     "action": {
       "default_popup": "hello.html",
       "default_icon": "frog.png"
