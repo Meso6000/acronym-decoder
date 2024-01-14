@@ -3,18 +3,12 @@
     "name": "Acronym Decoder",
     "description": "Scans your document for acronyms and replaces it with the definition",
     "version": "1.0",
-    "content_scripts": [
-        {
-            "matches": [   
-                "https://*/*",
-                "http://*/*"
-            ],
-            "js": ["contentupdate.js"],
-            "run_at": "document_end"
-        }
-    ],
     "action": {
       "default_popup": "menu.html",
       "default_icon": "media/icon.png"
+    },
+    "permissions": ["activeTab", "declarativeContent", "scripting"],
+    "background": {
+      "service_worker": "service-worker.js"
     }
 }
