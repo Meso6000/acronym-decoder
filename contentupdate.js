@@ -82,6 +82,7 @@ for (let i = 0; i < parts.length; i++){
         }
     }
 }
+chrome.runtime.sendMessage({ update: true })
 // (async () => {
 //     const response = await chrome.runtime.sendMessage({greeting: "hello"});
 //     // do something with response here, not outside the function
