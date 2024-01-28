@@ -4,6 +4,11 @@ var localAcrynoms = {}
 for (let i = 0; i < parts.length; i++){
     let part = parts[i];
     let text = part.innerText;
+
+    if (text === undefined){
+        continue;
+    }
+
     text = text.replace(/(\r\n|\n|\r|\t)/gm, " "); // replace new lines and tabs with spaces
     let words = text.split(" ");
     words = words.filter(word => word !== ""); // remove empty strings
@@ -57,6 +62,9 @@ for (let i = 0; i < parts.length; i++){
         let node = part.childNodes[j];
 
         if (node.nodeType === 3){
+            if (node.nodeValue === undefined){
+                continue;
+            }
             for (const [key, value] of Object.entries(localAcrynoms)) {
                 let text = node.nodeValue;
                 var replacedText = text;
@@ -65,13 +73,18 @@ for (let i = 0; i < parts.length; i++){
                 }else if(text.includes(key)){
                     replacedText = text.replaceAll(key, value);
                 }
-    
                 if (replacedText !== text) {
-                    part.replaceChild(document.createTextNode(replacedText), node);
+                    if(part.contains(node)){
+                        part.replaceChild(document.createTextNode(replacedText), node);
+                    }
                 }
             }
         }
     }
 }
-
-console.log(localAcrynoms);
+// (async () => {
+//     const response = await chrome.runtime.sendMessage({greeting: "hello"});
+//     // do something with response here, not outside the function
+//     console.log(response);
+// })();
+// console.log(localAcrynoms);

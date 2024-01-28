@@ -1,0 +1,38 @@
+/* FILEPATH: /Users/ali/Desktop/AD/acronym-decoder/menu.css */
+
+/* Menu container */
+img {
+    padding-top: 50px;
+    padding-right: 50px;
+    padding-bottom: 50px;
+    padding-left: 50px;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+/* Menu item */
+.menu-item {
+    padding: 5px;
+    margin-bottom: 5px;
+    background-color: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* Menu item hover effect */
+.menu-item:hover {
+    background-color: #e0e0e0;
+}
+
+/* Menu item active state */
+.menu-item.active {
+    background-color: #b3b3b3;
+    color: #fff;
+}
