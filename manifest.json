@@ -4,8 +4,13 @@
     "description": "Scans your document for acronyms and replaces it with the definition",
     "version": "1.0",
     "action": {
-      "default_popup": "menu.html",
-      "default_icon": "media/icon.png"
+      "default_popup": "menu.html"
+    },
+    "icons": {
+      "16": "media/icon16.png",
+      "32": "media/icon32.png",
+      "48": "media/icon48.png",
+      "128": "media/icon128.png"
     },
     "permissions": ["activeTab", "declarativeContent", "scripting"],
     "background": {
