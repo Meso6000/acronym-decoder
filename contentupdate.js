@@ -1,28 +1,29 @@
-var parts = document.getElementsByTagName('*');
-var localAcrynoms = {}
+var elements = document.getElementsByTagName('*');
+var localAcronyms = {}
 
-for (let i = 0; i < parts.length; i++){
-    let part = parts[i];
+for (let i = 0; i < elements.length; i++){
+    let part = elements[i];
     let text = part.innerText;
 
     if (text === undefined){
         continue;
     }
 
-    text = text.replace(/(\r\n|\n|\r|\t)/gm, " "); // replace new lines and tabs with spaces
+    text = text.replace(/(\r\n|\n|\r|\t)/gm, " "); 
     let words = text.split(" ");
-    words = words.filter(word => word !== ""); // remove empty strings
-    
+
+    // remove empty strings
+    words = words.filter(word => word !== ""); 
     if(words.length < 3){
         continue;
     }
 
     for (let j = 0; j < words.length; j++){
-        if (words[j].includes("(") && words[j].includes(")")){ //found acrynom candidate
-            var acronym = words[j].replace("(", "").replace(")", "").replace(".", "").replace(",", ""); // remove the brackets
+        if (words[j].includes("(") && words[j].includes(")")){ //found acronym candidate
+            var acronym = words[j].replace(/[().,]/g, ""); // remove the brackets and punctation
             let numberOfLetters = acronym.length; 
             
-            if ((j - numberOfLetters) < 0){ // avoid negative array elements, go to next acrynom candidate
+            if ((j - numberOfLetters) < 0){ // avoid negative array elements, go to next acronym candidate
                 acronym = "";
                 numberOfLetters = 0;
                 continue;
@@ -48,35 +49,36 @@ for (let i = 0; i < parts.length; i++){
            
             //if the acrynom is valid, add it to the dictionary
             if (acronymDef !== ""){
-                localAcrynoms[acronym.toUpperCase()] = acronymDef;
+                localAcronyms[acronym.toUpperCase()] = acronymDef;
             }
         }
     };
         
 }
 
-for (let i = 0; i < parts.length; i++){
-    let part = parts[i];
+for (let i = 0; i < elements.length; i++){
+    let part = elements[i];
 
     for (let j = 0; j < part.childNodes.length; j++){
         let node = part.childNodes[j];
 
-        if (node.nodeType === 3){
-            if (node.nodeValue === undefined){
-                continue;
-            }
-            for (const [key, value] of Object.entries(localAcrynoms)) {
-                let text = node.nodeValue;
-                var replacedText = text;
+        if (node.nodeType === 3 && node.nodeValue !== undefined){
+            let text = node.nodeValue;
+            var replacedText = text;
+
+            for (const [key, value] of Object.entries(localAcronyms)) {
                 if(text.includes("(" + key + ")")){
+                    //this is the first initial definition, keep the acronym here
                     replacedText = text.replaceAll(key, value).replace("(" + value, "(" + key);
                 }else if(text.includes(key)){
                     replacedText = text.replaceAll(key, value);
                 }
-                if (replacedText !== text) {
-                    if(part.contains(node)){
-                        part.replaceChild(document.createTextNode(replacedText), node);
-                    }
+            }
+
+             // only replace full text if any acronyms were detected and replaced
+             if (replacedText !== text) {
+                if(part.contains(node)){
+                    part.replaceChild(document.createTextNode(replacedText), node);
                 }
             }
         }
