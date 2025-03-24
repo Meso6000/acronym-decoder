@@ -1,6 +1,10 @@
 document.addEventListener('DOMContentLoaded', function () {
     var toggleButton = document.getElementById('toggle-btn');
     toggleButton.addEventListener('click', function () {
-      chrome.runtime.sendMessage({ replace: true });
+        chrome.runtime.sendMessage({ replace: true });
     });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    new ToggleManager();
 });
