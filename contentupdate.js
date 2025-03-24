@@ -1,5 +1,7 @@
 var elements = document.getElementsByTagName('*');
 var localAcronyms = {}
+// Words to skip when matching acronyms
+const skipWords = ["for", "to", "of", "and", "the", "in", "on", "at", "by", "with"];
 
 for (let i = 0; i < elements.length; i++){
     let part = elements[i];
@@ -21,34 +23,60 @@ for (let i = 0; i < elements.length; i++){
     for (let j = 0; j < words.length; j++){
         if (words[j].includes("(") && words[j].includes(")")){ //found acronym candidate
             var acronym = words[j].replace(/[().,]/g, ""); // remove the brackets and punctation
-            let numberOfLetters = acronym.length; 
-            
-            if ((j - numberOfLetters) < 0){ // avoid negative array elements, go to next acronym candidate
-                acronym = "";
-                numberOfLetters = 0;
+            if (acronym.match(/\d+/g) || localAcronyms[acronym.toUpperCase()]){ // if we have a number or already have seen it
                 continue;
             }
-            var acronymDef = "";
-            
-            //for as many letters in acrynom
-            for (let index = 0; index < numberOfLetters; index++) {
-                var letter = acronym[index];
-                var firstLetter = words[j - numberOfLetters + index][0];
-                //check if the letter is the same as the first letter in the word preceeding the acrynom
-                if(letter.toLowerCase() !== firstLetter.toLowerCase()){
+
+            let numberOfLetters = acronym.length; 
+            if ((j - numberOfLetters) < 0){ // avoid negative array elements, go to next acronym candidate
+                continue;
+            }
+
+            // Step 1: Find the start of the acronym definition by looping backwards
+            let start = j;
+            let matchedLetters = acronym.length - 1;
+
+            // Loop backwards to find the first letter match in the acronym
+            while (matchedLetters >= 0 && start >= 0 && start >= j - 15) { //15 is max we search backwards
+                const word = words[start].toLowerCase();
+                
+                if (!skipWords.includes(word) && words[start][0] === acronym[matchedLetters]) {
+                    matchedLetters--;
+                }
+                start--;
+            }
+
+            // Step 2: Build the definition by stepping forward and matching letters
+            start++; // Adjust to point to the first word of the definition
+            matchedLetters = 0;
+            var acronymDef = "";         
+
+            for (let i = start; i < j; i++) {
+                let word = words[i];
+                
+                // Always add skip words to the definition
+                if (skipWords.includes(word.toLowerCase())) {
+                    acronymDef += word + " ";
+                    continue;
+                }
+
+                // Match acronym letters with non-skip words
+                if (acronym[matchedLetters] === word[0]) {
+                    // Capitalize each matching word and add to the definition
+                    words[i] = word[0].toUpperCase() + word.substr(1);
+                    acronymDef += words[i] + " ";
+                    matchedLetters++;
+                } else {
+                    // Failed to match, reset the definition
                     acronymDef = "";
                     break;
                 }
-                else{
-                    //capitalize each word of the definition
-                    words[j - numberOfLetters + index] = words[j - numberOfLetters + index][0].toUpperCase() + words[j - numberOfLetters + index].substr(1);
-                    acronymDef += (words[j - numberOfLetters + index] + " ");
-                }
-                
             }
-           
+
             //if the acrynom is valid, add it to the dictionary
             if (acronymDef !== ""){
+                // Remove trailing space
+                acronymDef = acronymDef.trim();
                 localAcronyms[acronym.toUpperCase()] = acronymDef;
             }
         }
@@ -68,8 +96,8 @@ for (let i = 0; i < elements.length; i++){
             for (const [key, value] of Object.entries(localAcronyms)) {
                 if(text.includes("(" + key + ")")){
                     //this is the first initial definition, keep the acronym here
-                    replacedText = text.replaceAll(key, value).replace("(" + value, "(" + key);
-                }else if(text.includes(key)){
+                    continue;
+                }else if(text.includes(" "+ key)){
                     replacedText = text.replaceAll(key, value);
                 }
             }
@@ -83,12 +111,5 @@ for (let i = 0; i < elements.length; i++){
         }
     }
 }
-chrome.runtime.sendMessage({ update: true })
-
-(async () => {
-    const response = await chrome.runtime.sendMessage({greeting: "hello"});
-    // do something with response here, not outside the function
-    console.log(response);
-})();
-
+chrome.runtime.sendMessage({ update: true });
 console.log(localAcronyms);
