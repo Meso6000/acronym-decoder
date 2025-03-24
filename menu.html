@@ -1,19 +1,30 @@
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>Menu Popup</title>
-  </head>
+<head>
+  <title>Acronym Decoder</title>
   <link rel="stylesheet" href="menu.css">
-  <body>
-    <div class="menu-item">
-      <label class="toggle-switch">
-        <input type="checkbox" id="contentUpdateToggle">
-        <span class="slider"></span>
-      </label>
-      <span>Auto Content Update</span>
-    </div>
-    <img src="media/icon.png" id="iconImage">
-    <button type="button" id="toggle-btn">Toggle</button>
-    <script src="menu.js"></script>
-    <script src="toggleManager.js"></script>
-  </body>
+</head>
+
+<body>
+<div class="header">
+  <img src="media/icon.png" alt="Acronym Decoder">
+  <h1>Acronym Decoder</h1>
+</div>
+
+<div class="menu-item">
+  <label class="toggle-switch">
+    <input type="checkbox" id="contentUpdateToggle">
+    <span class="slider"></span>
+  </label>
+  <span>Auto Content Update</span>
+</div>
+
+<div class="manual-section">
+  <p>Or manually process the page:</p>
+  <button type="button" id="toggle-btn">Process Now</button>
+</div>
+
+<script src="toggleManager.js"></script>
+<script src="menu.js"></script>
+</body>
 </html>
