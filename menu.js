@@ -3,4 +3,4 @@ document.addEventListener('DOMContentLoaded', function () {
     toggleButton.addEventListener('click', function () {
       chrome.runtime.sendMessage({ replace: true });
     });
-  });
+});
