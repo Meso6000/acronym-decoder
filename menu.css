@@ -10,13 +10,15 @@ body {
 .header {
     display: flex;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #8A5FAD;
 }
 
 .header img {
-    width: 32px;
-    height: 32px;
+    width: 42px;
+    height: 42px;
     margin-right: 12px;
+    margin-bottom: 12px;
 }
 
 .header h1 {
@@ -28,8 +30,8 @@ body {
 .menu-item {
     display: flex;
     align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+    font-size: 15px;
 }
 
 /* Toggle switch styles */
@@ -66,13 +68,13 @@ body {
     width: 26px;
     left: 4px;
     bottom: 4px;
-    background-color: white;
+    background-color: #8A5FAD;
     transition: .4s;
     border-radius: 50%;
 }
 
 input:checked + .slider {
-    background-color: #2196F3;
+    background-color: #8A5FAD;
 }
 
 input:checked + .slider:before {
@@ -81,8 +83,9 @@ input:checked + .slider:before {
 
 /* Manual process section */
 .manual-section {
-    margin-top: 16px;
+    margin-top: 10px;
     text-align: center;
+    font-size: 16px;
 }
 
 /* Button styles */
@@ -90,12 +93,12 @@ button {
     padding: 8px 16px;
     border-radius: 4px;
     border: none;
-    background-color: #4285f4;
+    background-color: #8A5FAD;
     color: white;
     cursor: pointer;
     margin-top: 8px;
 }
 
 button:hover {
-    background-color: #3367d6;
+    background-color: #8A5FAD;
 }
